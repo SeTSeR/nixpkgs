@@ -44,7 +44,7 @@
   python3Packages,
 }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (finalAttrs: {
   pname = "far2l";
   version = "2.9.0-unstable-06-09-2026";
 
@@ -124,7 +124,7 @@ stdenv.mkDerivation rec {
 
   postInstall = ''
     wrapProgram $out/bin/far2l \
-      --prefix PATH : ${lib.makeBinPath runtimeDeps} \
+      --prefix PATH : ${lib.makeBinPath finalAttrs.runtimeDeps} \
       --suffix PATH : ${lib.makeBinPath [ xdg-utils ]}
     # Link 7z plugin
     echo "Linking 7z libraries..."
@@ -143,4 +143,4 @@ stdenv.mkDerivation rec {
     maintainers = with lib.maintainers; [ smakarov ];
     platforms = lib.platforms.unix;
   };
-}
+})
